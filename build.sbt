@@ -25,7 +25,7 @@ lazy val root = project.in(file("."))
     name := "scalikejdbc-stream-root",
     publishArtifact := false
   )
-  .aggregate(stream, fs2)
+  .aggregate(stream, fs2, akka)
 
 lazy val stream = project.in(file("stream"))
   .settings(commonSettings: _*)

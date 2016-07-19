@@ -15,6 +15,12 @@ class ResultSetIterator[+A](rs: ResultSet, extractor: WrappedResultSet => A, val
     extractor(WrappedResultSet(rs, cursor, cursor.position))
   }
 
-  def withOnFinish(newOnFinish: () => Unit): ResultSetIterator[A] = new ResultSetIterator(rs, extractor, newOnFinish)
+  def appendOnFinish(f: () => Unit): ResultSetIterator[A] = {
+    new ResultSetIterator(rs, extractor, { () =>
+      onFinish()
+      f()
+    })
+  }
+
 }
 
