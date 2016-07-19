@@ -1,24 +1,25 @@
-package scalikejdbc.fs2
+package scalikejdbc.stream.fs2
 
 import _root_.fs2._
 import scalikejdbc.GeneralizedTypeConstraintsForWithExtractor.=:=
-import scalikejdbc.{ ConnectionPoolContext, DBSession, NoConnectionPoolContext, ReadOnlyAutoSession, SQL, WithExtractor }
+import scalikejdbc.stream.SQLToIterator
+import scalikejdbc.{ ConnectionPool, DBSession, SQL, WithExtractor }
 
 object SQLStream {
-  def apply[A, E <: WithExtractor](sql: SQL[A, E])(
+
+  def apply[A, E <: WithExtractor](sql: SQL[A, E], pool: ConnectionPool)(
     implicit
-    session: DBSession = ReadOnlyAutoSession,
-    context: ConnectionPoolContext = NoConnectionPoolContext,
     hasExtractor: sql.ThisSQL =:= sql.SQLWithExtractor,
     S: Strategy
   ): Stream[Task, A] = {
 
-    val initIterator = Task {
+    val initState: Task[State[A]] = Task {
+      implicit val session = DBSession(pool.borrow(), isReadOnly = true)
       val iterator = SQLToIterator(sql).apply()
       new State(session, iterator)
     }
 
-    Stream.bracket(initIterator)(
+    Stream.bracket(initState)(
       s => Stream.unfoldEval(s)(s => Task(if (s.iterator.hasNext) Some((s.iterator.next(), s)) else None)),
       s => Task(s.session.close())
     )
