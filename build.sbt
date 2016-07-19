@@ -16,7 +16,11 @@ val commonSettings = Seq(
     "-Xlint"
   ),
 
-  doctestTestFramework := DoctestTestFramework.ScalaTest
+  libraryDependencies ++= Seq(
+    "com.h2database" % "h2" % "1.4.191" % "test",
+    "ch.qos.logback" % "logback-classic" % "1.1.7" % "test",
+    "org.scalatest" %% "scalatest" % "2.2.6" % "test"
+  )
 )
 
 lazy val root = project.in(file("."))
@@ -25,7 +29,7 @@ lazy val root = project.in(file("."))
     name := "scalikejdbc-stream-root",
     publishArtifact := false
   )
-  .aggregate(stream, fs2, akka)
+  .aggregate(stream, fs2, akka, scalaz)
 
 lazy val stream = project.in(file("stream"))
   .settings(commonSettings: _*)
@@ -33,9 +37,7 @@ lazy val stream = project.in(file("stream"))
     name := "scalikejdbc-stream",
     description := "Scalikejdbc stream",
     libraryDependencies ++= Seq(
-      "org.scalikejdbc" %% "scalikejdbc" % "2.4.1",
-      "com.h2database" % "h2" % "1.4.191" % "test",
-      "ch.qos.logback" % "logback-classic" % "1.1.7" % "test"
+      "org.scalikejdbc" %% "scalikejdbc" % "2.4.1"
     )
   )
 
@@ -45,9 +47,7 @@ lazy val fs2 = project.in(file("fs2"))
     name := "scalikejdbc-stream-fs2",
     description := "Scalikejdbc stream FS2",
     libraryDependencies ++= Seq(
-      "co.fs2" %% "fs2-core" % "0.9.0-M6",
-      "com.h2database" % "h2" % "1.4.191" % "test",
-      "ch.qos.logback" % "logback-classic" % "1.1.7" % "test"
+      "co.fs2" %% "fs2-core" % "0.9.0-M6"
     )
   )
   .dependsOn(stream)
@@ -58,9 +58,18 @@ lazy val akka = project.in(file("akka"))
     name := "scalikejdbc-stream-akka",
     description := "Scalikejdbc stream Akka",
     libraryDependencies ++= Seq(
-      "com.typesafe.akka" %% "akka-stream" % "2.4.8",
-      "com.h2database" % "h2" % "1.4.191" % "test",
-      "ch.qos.logback" % "logback-classic" % "1.1.7" % "test"
+      "com.typesafe.akka" %% "akka-stream" % "2.4.8"
+    )
+  )
+  .dependsOn(stream)
+
+lazy val scalaz = project.in(file("scalaz"))
+  .settings(commonSettings: _*)
+  .settings(
+    name := "scalikejdbc-stream-akka",
+    description := "Scalikejdbc stream Akka",
+    libraryDependencies ++= Seq(
+      "org.scalaz.stream" %% "scalaz-stream" % "0.8.2"
     )
   )
   .dependsOn(stream)

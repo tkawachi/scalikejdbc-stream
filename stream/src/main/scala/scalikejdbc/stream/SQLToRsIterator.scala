@@ -3,7 +3,9 @@ package scalikejdbc.stream
 import scalikejdbc.GeneralizedTypeConstraintsForWithExtractor.=:=
 import scalikejdbc.{ ConnectionPool, DBConnectionAttributesWiredResultSet, DBSession, LogSupport, SQL, SQLToResult, WithExtractor, WrappedResultSet }
 
-private[stream] trait SQLToRsIterator[A, E <: WithExtractor] extends SQLToResult[A, E, ResultSetIterator] {
+private[stream] trait SQLToRsIterator[A, E <: WithExtractor]
+    extends SQLToResult[A, E, ResultSetIterator]
+    with LogSupport {
 
   def result[AA](f: WrappedResultSet => AA, session: DBSession): ResultSetIterator[AA] = {
     val executor = session.toStatementExecutor(statement, rawParameters)
@@ -11,6 +13,7 @@ private[stream] trait SQLToRsIterator[A, E <: WithExtractor] extends SQLToResult
 
     new ResultSetIterator(proxy, f, () => {
       try {
+        log.error("closing StatementExecutor")
         executor.close()
       } finally {
         // see DBSession#using()

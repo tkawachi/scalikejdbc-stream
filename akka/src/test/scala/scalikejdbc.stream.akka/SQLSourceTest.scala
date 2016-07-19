@@ -1,6 +1,7 @@
 package scalikejdbc.stream.akka
 
 import akka.actor.ActorSystem
+import akka.stream.scaladsl.Sink
 import akka.stream.{ ActorMaterializer, Materializer }
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.time.{ Minutes, Span }
@@ -44,5 +45,10 @@ class SQLSourceTest extends FunSuite with BeforeAndAfterAll with ScalaFutures {
     val totalLength = src.take(100).runFold(0L)((acc, tpl) => acc + tpl.length)
 
     assert(totalLength.futureValue == 1024 * 1024 * 100)
+  }
+
+  test("select 1") {
+    val src = SQLSource(sql"select 1".map(_.int(1)), ConnectionPool())
+    assert(src.runWith(Sink.seq).futureValue == Seq(1))
   }
 }
