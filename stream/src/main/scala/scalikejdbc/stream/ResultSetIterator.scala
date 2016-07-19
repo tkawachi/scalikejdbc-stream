@@ -4,7 +4,7 @@ import java.sql.ResultSet
 
 import scalikejdbc.{ ResultSetCursor, WrappedResultSet }
 
-class ResultSetIterator[+A](
+class ResultSetIterator[+A] private (
     rs: ResultSet,
     extractor: WrappedResultSet => A,
     val onFinish: () => Unit,
