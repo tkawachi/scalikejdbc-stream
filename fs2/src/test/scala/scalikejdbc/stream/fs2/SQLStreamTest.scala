@@ -37,7 +37,6 @@ class SQLStreamTest extends FunSuite with BeforeAndAfterAll {
     assert(result == Vector(1024 * 1024 * 100))
   }
 
-
   test("select 1") {
     assert(SQLStream(sql"select 1".map(_.int(1)), ConnectionPool()).runLog.unsafeRun() == Vector(1))
   }
