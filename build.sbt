@@ -66,7 +66,7 @@ lazy val akka = project.in(file("akka"))
 lazy val scalaz = project.in(file("scalaz"))
   .settings(commonSettings: _*)
   .settings(
-    name := "scalikejdbc-stream-akka",
+    name := "scalikejdbc-stream-scalaz",
     description := "Scalikejdbc stream Akka",
     libraryDependencies ++= Seq(
       "org.scalaz.stream" %% "scalaz-stream" % "0.8.2"
