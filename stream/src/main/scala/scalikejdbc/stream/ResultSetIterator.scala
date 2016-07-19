@@ -17,3 +17,4 @@ class ResultSetIterator[+A](rs: ResultSet, extractor: WrappedResultSet => A, val
 
   def withOnFinish(newOnFinish: () => Unit): ResultSetIterator[A] = new ResultSetIterator(rs, extractor, newOnFinish)
 }
+

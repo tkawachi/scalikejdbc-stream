@@ -2,7 +2,7 @@ package scalikejdbc.stream
 
 import scalikejdbc.{ HasExtractor, SQL, WithExtractor, WrappedResultSet }
 
-class SQLToRsIteratorImpl[A, E <: WithExtractor](
+private[stream] class SQLToRsIteratorImpl[A, E <: WithExtractor](
   override val statement: String, private[scalikejdbc] override val rawParameters: Seq[Any]
 )(
   override val extractor: WrappedResultSet => A

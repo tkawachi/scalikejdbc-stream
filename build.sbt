@@ -51,3 +51,16 @@ lazy val fs2 = project.in(file("fs2"))
     )
   )
   .dependsOn(stream)
+
+lazy val akka = project.in(file("akka"))
+  .settings(commonSettings: _*)
+  .settings(
+    name := "scalikejdbc-stream-akka",
+    description := "Scalikejdbc stream Akka",
+    libraryDependencies ++= Seq(
+      "com.typesafe.akka" %% "akka-stream" % "2.4.8",
+      "com.h2database" % "h2" % "1.4.191" % "test",
+      "ch.qos.logback" % "logback-classic" % "1.1.7" % "test"
+    )
+  )
+  .dependsOn(stream)

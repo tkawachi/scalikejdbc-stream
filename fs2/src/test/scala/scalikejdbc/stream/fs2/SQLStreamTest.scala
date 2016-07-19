@@ -32,7 +32,9 @@ class SQLStreamTest extends FunSuite with BeforeAndAfterAll {
 
     val src = SQLStream(sql"select T FROM FOO".map(_.string(1)), pool)
     val totalLength = src.take(100).fold(0L)((acc, tpl) => acc + tpl.length)
+    val result = totalLength.runLog.unsafeAttemptRun()
+    result.left.foreach(_.printStackTrace())
 
-    assert(totalLength.runLog.unsafeAttemptRun() == Right(Vector(1024 * 1024 * 100)))
+    assert(result == Right(Vector(1024 * 1024 * 100)))
   }
 }
