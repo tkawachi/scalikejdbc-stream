@@ -4,8 +4,15 @@ import java.sql.ResultSet
 
 import scalikejdbc.{ ResultSetCursor, WrappedResultSet }
 
-class ResultSetIterator[+A](rs: ResultSet, extractor: WrappedResultSet => A, val onFinish: () => Unit) extends Iterator[A] {
-  private[this] val cursor = new ResultSetCursor(0)
+class ResultSetIterator[+A](
+    rs: ResultSet,
+    extractor: WrappedResultSet => A,
+    val onFinish: () => Unit,
+    cursor: ResultSetCursor
+) extends Iterator[A] {
+
+  def this(rs: ResultSet, extractor: WrappedResultSet => A, onFinish: () => Unit) =
+    this(rs, extractor, onFinish, new ResultSetCursor(0))
 
   override def hasNext: Boolean = !rs.isLast
 
@@ -16,10 +23,11 @@ class ResultSetIterator[+A](rs: ResultSet, extractor: WrappedResultSet => A, val
   }
 
   def appendOnFinish(f: () => Unit): ResultSetIterator[A] = {
-    new ResultSetIterator(rs, extractor, { () =>
+    val newOnFinish = () => {
       onFinish()
       f()
-    })
+    }
+    new ResultSetIterator(rs, extractor, newOnFinish, cursor)
   }
 
 }
