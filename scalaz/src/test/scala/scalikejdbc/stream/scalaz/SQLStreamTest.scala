@@ -1,9 +1,13 @@
 package scalikejdbc.stream.scalaz
 
+import java.util.concurrent.ExecutorService
+
 import scalikejdbc._
 import org.scalatest.{ BeforeAndAfterAll, FunSuite }
 
 class SQLStreamTest extends FunSuite with BeforeAndAfterAll {
+
+  implicit val es: ExecutorService = scalaz.concurrent.Strategy.DefaultExecutorService
 
   override def beforeAll(): Unit = {
     super.beforeAll()

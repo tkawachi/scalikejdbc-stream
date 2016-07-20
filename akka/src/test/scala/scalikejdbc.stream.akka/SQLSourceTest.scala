@@ -8,6 +8,8 @@ import org.scalatest.time.{ Minutes, Span }
 import org.scalatest.{ BeforeAndAfterAll, FunSuite }
 import scalikejdbc._
 
+import scala.concurrent.ExecutionContext.Implicits.global
+
 class SQLSourceTest extends FunSuite with BeforeAndAfterAll with ScalaFutures {
 
   implicit var actorSystem: ActorSystem = _
