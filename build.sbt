@@ -1,3 +1,7 @@
+val _versions = new {
+  val scalikejdbc = "2.4.1"
+}
+
 val commonSettings = Seq(
   organization := "com.github.tkawachi",
   licenses := Seq("MIT" -> url("http://opensource.org/licenses/MIT")),
@@ -17,9 +21,10 @@ val commonSettings = Seq(
   ),
 
   libraryDependencies ++= Seq(
-    "com.h2database" % "h2" % "1.4.191" % "test",
     "ch.qos.logback" % "logback-classic" % "1.1.7" % "test",
-    "org.scalatest" %% "scalatest" % "2.2.6" % "test"
+    "com.h2database" % "h2" % "1.4.191" % "test",
+    "org.scalatest" %% "scalatest" % "2.2.6" % "test",
+    "org.scalikejdbc" %% "scalikejdbc" % _versions.scalikejdbc % "test"
   )
 )
 
@@ -37,7 +42,7 @@ lazy val stream = project.in(file("stream"))
     name := "scalikejdbc-stream",
     description := "Scalikejdbc stream",
     libraryDependencies ++= Seq(
-      "org.scalikejdbc" %% "scalikejdbc" % "2.4.1"
+      "org.scalikejdbc" %% "scalikejdbc-core" % _versions.scalikejdbc
     )
   )
 
