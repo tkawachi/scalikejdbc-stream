@@ -46,3 +46,14 @@ implicit val es: ExecutorService = ??? // for DB operations
 val hugeResultQuery = sql"SELECT 1".map(_.int(1))
 val stream = SQLStream(hugeResultQuery, ConnectionPool()) // <- Stream of scalaz-stream
 ```
+
+## Notes
+
+### MySQL Connector/J
+
+
+> By default, ResultSets are completely retrieved and stored in memory.
+
+> The combination of a forward-only, read-only result set, with a fetch size of Integer.MIN_VALUE serves as a signal to the driver to stream result sets row-by-row. After this, any result sets created with the statement will be retrieved row-by-row.
+
+https://dev.mysql.com/doc/connector-j/5.1/en/connector-j-reference-implementation-notes.html
