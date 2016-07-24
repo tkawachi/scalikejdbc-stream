@@ -19,7 +19,7 @@ val hugeResultQuery = sql"SELECT 1".map(_.int(1))
 val src = SQLSource(hugeResultQuery, ConnectionPool()) // <- Source of akka-stream
 ```
 
-## scalikejdbc-fs2
+## scalikejdbc-stream-fs2
 
 fs2 integration.
 
@@ -33,7 +33,7 @@ val hugeResultQuery = sql"SELECT 1".map(_.int(1))
 val stream = SQLStream(hugeResultQuery, ConnectionPool()) // <- Stream of fs2
 ```
 
-## scalikejdbc-scalaz
+## scalikejdbc-stream-scalaz
 
 scalaz-stream integration.
 
