@@ -10,16 +10,7 @@ private[stream] trait SQLToRsIterator[A, E <: WithExtractor]
     val executor = session.toStatementExecutor(statement, rawParameters)
     val proxy = new DBConnectionAttributesWiredResultSet(executor.executeQuery(), session.connectionAttributes)
 
-    new ResultSetIterator(proxy, f, () => {
-      try {
-        executor.close()
-      } finally {
-        // see DBSession#using()
-        session.fetchSize(None)
-        // session.tags() // TODO clear tags to Vector.empty
-        session.queryTimeout(None)
-      }
-    })
+    new ResultSetIterator(proxy, f, () => executor.close())
   }
 }
 
