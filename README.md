@@ -3,7 +3,7 @@
 This library provides a way to integrate scalikejdbc to various stream libraries.
 Stream libraries are useful to handle huge result set.
 
-Currently it supports scalikejdbc 2.4.1, akka-stream 2.4.x, fs2 0.9.0-M6, scalaz-stream 0.8.2.
+Currently it supports scalikejdbc 3.3.2, akka-stream 2.5.x, fs2 1.0.5, scalaz-stream 0.8.6.
 
 ## scalikejdbc-stream-akka
 
