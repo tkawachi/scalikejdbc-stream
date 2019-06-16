@@ -5,11 +5,10 @@ import java.sql.ResultSet
 import scalikejdbc.{ ResultSetCursor, WrappedResultSet }
 
 class ResultSetIterator[+A] private (
-    rs: ResultSet,
-    extractor: WrappedResultSet => A,
-    val onFinish: () => Unit,
-    cursor: ResultSetCursor
-) extends Iterator[A] {
+  rs: ResultSet,
+  extractor: WrappedResultSet => A,
+  val onFinish: () => Unit,
+  cursor: ResultSetCursor) extends Iterator[A] {
 
   def this(rs: ResultSet, extractor: WrappedResultSet => A, onFinish: () => Unit) =
     this(rs, extractor, onFinish, new ResultSetCursor(0))

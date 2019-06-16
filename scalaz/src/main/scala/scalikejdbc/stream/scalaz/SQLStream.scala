@@ -15,8 +15,7 @@ object SQLStream {
   def apply[A, E <: WithExtractor](sql: SQL[A, E], pool: ConnectionPool)(
     implicit
     hasExtractor: sql.ThisSQL =:= sql.SQLWithExtractor,
-    es: ExecutorService
-  ): Process[Task, A] = {
+    es: ExecutorService): Process[Task, A] = {
     iteratorR(Task(SQLToRsIterator.toResultSetIterator(sql, pool)))(s => Task(s.onFinish()))(s => Task(s))
   }
 }

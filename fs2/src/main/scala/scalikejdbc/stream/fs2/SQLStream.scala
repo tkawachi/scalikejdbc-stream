@@ -10,12 +10,10 @@ object SQLStream {
   def apply[A, E <: WithExtractor](sql: SQL[A, E], pool: ConnectionPool)(
     implicit
     hasExtractor: sql.ThisSQL =:= sql.SQLWithExtractor,
-    S: Strategy
-  ): Stream[Task, A] = {
+    S: Strategy): Stream[Task, A] = {
     Stream.bracket(Task(SQLToRsIterator.toResultSetIterator(sql, pool)))(
       s => Stream.unfoldEval(s)(s => Task(if (s.hasNext) Some((s.next(), s)) else None)),
-      s => Task(s.onFinish())
-    )
+      s => Task(s.onFinish()))
   }
 
 }
