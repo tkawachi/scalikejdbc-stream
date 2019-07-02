@@ -1,5 +1,5 @@
 val _versions = new {
-  val scalikejdbc = "2.4.1"
+  val scalikejdbc = "3.3.2"
 }
 
 val commonSettings = Seq(
@@ -10,7 +10,7 @@ val commonSettings = Seq(
     "scm:git:github.com:tkawachi/scalikejdbc-akka-stream-test.git"
   )),
 
-  scalaVersion := "2.11.8",
+  scalaVersion := "2.12.8",
   scalacOptions ++= Seq(
     "-deprecation",
     "-encoding", "UTF-8",
@@ -21,9 +21,9 @@ val commonSettings = Seq(
   ),
 
   libraryDependencies ++= Seq(
-    "ch.qos.logback" % "logback-classic" % "1.1.7" % "test",
-    "com.h2database" % "h2" % "1.4.191" % "test",
-    "org.scalatest" %% "scalatest" % "2.2.6" % "test",
+    "ch.qos.logback" % "logback-classic" % "1.2.3" % "test",
+    "com.h2database" % "h2" % "1.4.197" % "test",
+    "org.scalatest" %% "scalatest" % "3.0.5" % "test",
     "org.scalikejdbc" %% "scalikejdbc" % _versions.scalikejdbc % "test"
   )
 )
@@ -52,7 +52,7 @@ lazy val fs2 = project.in(file("fs2"))
     name := "scalikejdbc-stream-fs2",
     description := "Scalikejdbc stream FS2",
     libraryDependencies ++= Seq(
-      "co.fs2" %% "fs2-core" % "0.9.0-M6"
+      "co.fs2" %% "fs2-core" % "1.0.5"
     )
   )
   .dependsOn(stream)
@@ -63,7 +63,7 @@ lazy val akka = project.in(file("akka"))
     name := "scalikejdbc-stream-akka",
     description := "Scalikejdbc stream Akka",
     libraryDependencies ++= Seq(
-      "com.typesafe.akka" %% "akka-stream" % "2.4.8"
+      "com.typesafe.akka" %% "akka-stream" % "2.5.23"
     )
   )
   .dependsOn(stream)
@@ -74,7 +74,7 @@ lazy val scalaz = project.in(file("scalaz"))
     name := "scalikejdbc-stream-scalaz",
     description := "Scalikejdbc stream Akka",
     libraryDependencies ++= Seq(
-      "org.scalaz.stream" %% "scalaz-stream" % "0.8.2"
+      "org.scalaz.stream" %% "scalaz-stream" % "0.8.6"
     )
   )
   .dependsOn(stream)

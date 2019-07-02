@@ -1,12 +1,12 @@
 package scalikejdbc.stream.fs2
 
-import _root_.fs2._
+import cats.effect.IO
 import org.scalatest.{ BeforeAndAfterAll, FunSuite }
 import scalikejdbc._
 
 class SQLStreamTest extends FunSuite with BeforeAndAfterAll {
 
-  implicit val strategy = Strategy.fromCachedDaemonPool()
+  implicit val contextShift = IO.contextShift(scala.concurrent.ExecutionContext.Implicits.global)
 
   override def beforeAll(): Unit = {
     super.beforeAll()
@@ -32,12 +32,12 @@ class SQLStreamTest extends FunSuite with BeforeAndAfterAll {
 
     val src = SQLStream(sql"select T FROM FOO".map(_.string(1)), pool)
     val totalLength = src.take(100).fold(0L)((acc, tpl) => acc + tpl.length)
-    val result = totalLength.runLog.unsafeRun()
+    val result = totalLength.compile.toVector.unsafeRunSync()
 
     assert(result == Vector(1024 * 1024 * 100))
   }
 
   test("select 1") {
-    assert(SQLStream(sql"select 1".map(_.int(1)), ConnectionPool()).runLog.unsafeRun() == Vector(1))
+    assert(SQLStream(sql"select 1".map(_.int(1)), ConnectionPool()).compile.toVector.unsafeRunSync() == Vector(1))
   }
 }
